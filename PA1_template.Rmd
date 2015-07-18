@@ -44,8 +44,28 @@ medianStepsPerDay <- median(stepsPerDay$steps)
 The mean steps per day is **`r meanStepsPerDay`** and the median is **`r medianStepsPerDay`**
 
 ## What is the average daily activity pattern?
-
-
+Calculate the average steps per 5-minute interval (averaged accross all days)
+```{r}
+stepsPerInterval <- aggregate(steps ~ interval, data=activityData, FUN=mean)
+```
+Plot a time-series of this information
+```{r AvgStepsPer5MinInterval}
+plot(stepsPerInterval, 
+     type="l", 
+     main="Average Number of Steps per 5-minute Interval",
+     ylab="Average Number of Steps", 
+     xlab="5-minute Interval", 
+     col="red")
+polygon(x=stepsPerInterval$interval, y=stepsPerInterval$steps, col="red")
+```
+Calculate the 5-minute interval containing the maximum average number of steps
+```{r}
+intervalOfMaxMeanSteps <- subset(
+    stepsPerInterval, 
+    subset=steps==max(stepsPerInterval$steps), 
+    select=interval)$interval
+```
+The 5-minute interval is **`r intervalOfMaxMeanSteps`**
 
 ## Imputing missing values
 
