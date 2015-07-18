@@ -142,3 +142,49 @@ hist(stepsPerDayWithoutNA$steps,
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+First, create a new factor variable for Weekday vs. Weekend and add it to the data frame
+```{r}
+weekdayIndicator <- as.factor(
+    ifelse(
+        weekdays(activityDataWithoutNA$date) %in% 
+            c("Saturday","Sunday"),
+        "Weekend",
+        "Weekday"
+        )
+    )
+
+activityDataWithoutNA$weekdayIndicator <- weekdayIndicator
+```
+
+Calculate the average steps per interval and weekday indicator
+```{r}
+stepsPerIntervalAndWeekdayInd <- aggregate(
+    steps ~ interval+weekdayIndicator, 
+    data=activityDataWithoutNA, 
+    FUN=mean)
+```
+
+Plot the result
+```{r AvgStepsPerIntervalAndWeekdayIndicator}
+par(mfcol=c(1,1))
+library(lattice)
+xyplot(
+    data=stepsPerIntervalAndWeekdayInd,
+    steps~interval|weekdayIndicator, 
+    layout=c(1,2), 
+    type="l", 
+    xlab="Interval", 
+    ylab="Average Number of Steps")
+```
+
+There seem to be several differences weekdays vs. weekends:
+
+* Weekday activity starts earlier in the day
+
+* Weekday activity peaks in the morning, with ~ 50 steps on average per 5 minute period for the remainder of the day
+
+* Weekend activity starts later, and does not have a pronounced peak in the morning
+
+* Weekend activity during the day is generally higher (closer to 75-100 steps on agerage per 5-minute period)
+
+* Weekend actitity lasts longer into the night
