@@ -64,6 +64,7 @@ polygon(x=stepsPerInterval$interval, y=stepsPerInterval$steps, col="red")
 ```
 
 ![](PA1_template_files/figure-html/AvgStepsPer5MinInterval-1.png) 
+
 Calculate the 5-minute interval containing the maximum average number of steps
 
 ```r
